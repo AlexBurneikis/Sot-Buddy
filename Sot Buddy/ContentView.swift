@@ -7,18 +7,13 @@
 
 import SwiftUI
 
-private struct voyage: Identifiable {
+struct voyage: Identifiable {
     let id: String
     let duration: Int
+    let gold: Int
+    let doubloons: Int
 }
-
-private let voyages: [voyage] = [
-    voyage(id: "My Voyage", duration: 455),
-    voyage(id: "Poggy", duration: 32222),
-    voyage(id: "Hello World", duration: 33),
-    voyage(id: "Reaper Shenanigans", duration: 587),
-    voyage(id: "Cargo", duration: 6000)
-]
+var voyages: [voyage] = []
 
 struct ContentView: View {
     func timeString(time: TimeInterval) -> String {
@@ -117,14 +112,26 @@ struct NewVoyage: View {
         }
     }
     
+    func saveVoyage() {
+        let outputVoyage = voyage(id: (voyageName.count != 0 ? voyageName : "My Voyage"), duration: Int(managerClass.secondElapsed), gold: goldProfit(), doubloons: doubloonProfit())
+        voyages.append(outputVoyage)
+        print(voyages)
+    }
+    
     var body: some View {
         Form {
             Section {
                 TextField("My Voyage", text: $voyageName)
-                TextField("Initial Gold", text: $initialGold)
-                    .keyboardType(.decimalPad)
-                TextField("Initial Doubloons", text: $initialDoubloons)
-                    .keyboardType(.decimalPad)
+                HStack {
+                    Image("Gold")
+                    TextField("Initial Gold", text: $initialGold)
+                        .keyboardType(.decimalPad)
+                }
+                HStack {
+                    Image("Doubloon")
+                    TextField("Initial Doubloons", text: $initialDoubloons)
+                        .keyboardType(.decimalPad)
+                }
             }
             Section {
                 Button {
@@ -141,21 +148,40 @@ struct NewVoyage: View {
             }
         }
         .navigationBarTitle(Text("New Voyage"))
-        .sheet(isPresented: $voyageSheetShow) {
+        .sheet(isPresented: $voyageSheetShow, onDismiss: {
+            managerClass.stop()
+            managerClass.secondElapsed = 0
+            voyageName = ""
+            initialGold = ""
+            initialDoubloons = ""
+            finalGold = ""
+            finalDoubloons = ""
+        }) {
             NavigationView {
                 VStack {
                     Text(timeString(time: TimeInterval(managerClass.secondElapsed)))
                     Form {
-                        TextField("Final Gold", text: $finalGold)
-                            .keyboardType(.decimalPad)
-                        TextField("Final Doubloons", text: $finalDoubloons)
-                            .keyboardType(.decimalPad)
+                        HStack {
+                            Image("Gold")
+                            TextField("Final Gold", text: $finalGold)
+                                .keyboardType(.decimalPad)
+                        }
+                        HStack {
+                            Image("Doubloon")
+                            TextField("Final Doubloons", text: $finalDoubloons)
+                                .keyboardType(.decimalPad)
+                        }
                     }
                     HStack {
+                        Spacer()
                         Text("+" + String(goldProfit()))
+                        Image("Gold")
                         Text(String(goldPerHour()) + "/hour")
+                        Spacer()
                         Text("+" + String(doubloonProfit()))
+                        Image("Doubloon")
                         Text(String(doubloonsPerHour()) + "/hour")
+                        Spacer()
                     }
                 }
                 .navigationTitle(Text(voyageName != "" ? voyageName : "My Voyage"))
@@ -174,13 +200,8 @@ struct NewVoyage: View {
                 Alert(
                     title: Text("Done?"),
                     primaryButton: Alert.Button.destructive(Text("Done")) {
+                        saveVoyage()
                         voyageSheetShow.toggle()
-                        //saveVoyage()
-                        voyageName = ""
-                        initialGold = ""
-                        initialDoubloons = ""
-                        finalGold = ""
-                        finalDoubloons = ""
                     },
                     secondaryButton: Alert.Button.cancel(Text("Continue")) {
                         managerClass.start()
@@ -208,6 +229,7 @@ class ManagerClass: ObservableObject {
         timer.invalidate()
     }
 }
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()

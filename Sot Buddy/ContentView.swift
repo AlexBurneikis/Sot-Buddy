@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct voyage: Identifiable {
-    let id: String
+    let name: String
     let duration: Int
     let gold: Int
     let doubloons: Int
+    var id: String { name }
 }
 var voyages: [voyage] = []
 
 struct ContentView: View {
+    @State var previousVoyages = voyages
+    
     func timeString(time: TimeInterval) -> String {
         let hours = Int(time) / 3600
         let minutes = Int(time) / 60 % 60
@@ -41,12 +44,12 @@ struct ContentView: View {
                         
                     }
                     Section {
-                        ForEach(voyages) { voyage in
+                        ForEach(previousVoyages) { voyage in
                             NavigationLink(destination: {
                                 PreviousVoyage()
                             }, label: {
                                 HStack {
-                                    Text(voyage.id)
+                                    Text(voyage.name)
                                     Spacer()
                                     Text(timeString(time: TimeInterval(voyage.duration)))
                                         .fontWeight(.light)
@@ -58,6 +61,9 @@ struct ContentView: View {
             }
             .navigationBarTitle(Text("Ahoy!"))
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                previousVoyages = voyages
+            }
         }
     }
 }
@@ -68,6 +74,7 @@ struct NewVoyage: View {
     @State private var initialDoubloons = ""
     @State private var voyageSheetShow = false
     @State private var showAlert = false
+    @State private var alertNameTaken = false
     @State private var finalGold = ""
     @State private var finalDoubloons = ""
     
@@ -113,9 +120,8 @@ struct NewVoyage: View {
     }
     
     func saveVoyage() {
-        let outputVoyage = voyage(id: (voyageName.count != 0 ? voyageName : "My Voyage"), duration: Int(managerClass.secondElapsed), gold: goldProfit(), doubloons: doubloonProfit())
-        voyages.append(outputVoyage)
-        print(voyages)
+        let outputVoyage = voyage(name: (voyageName.count != 0 ? voyageName : "My Voyage"), duration: Int(managerClass.secondElapsed), gold: goldProfit(), doubloons: doubloonProfit())
+        voyages.insert(outputVoyage, at: 0)
     }
     
     var body: some View {
@@ -135,8 +141,15 @@ struct NewVoyage: View {
             }
             Section {
                 Button {
-                    voyageSheetShow.toggle()
-                    managerClass.start()
+                    if voyages.contains(where: { voyage in
+                        return voyage.name == (voyageName.count != 0 ? voyageName : "My Voyage")
+                    }) {
+                        alertNameTaken.toggle()
+                    }
+                    else {
+                        voyageSheetShow.toggle()
+                        managerClass.start()
+                    }
                 } label: {
                     HStack {
                         Spacer()
@@ -147,15 +160,21 @@ struct NewVoyage: View {
                 }
             }
         }
+        .alert(isPresented: $alertNameTaken) {
+            Alert(
+                title: Text("Voyage Name already exists"),
+                dismissButton: Alert.Button.destructive(Text("Done")) {
+                    voyageName = ""
+                })}
         .navigationBarTitle(Text("New Voyage"))
         .sheet(isPresented: $voyageSheetShow, onDismiss: {
             managerClass.stop()
-            managerClass.secondElapsed = 0
             voyageName = ""
             initialGold = ""
             initialDoubloons = ""
             finalGold = ""
             finalDoubloons = ""
+            managerClass.secondElapsed = 0.9
         }) {
             NavigationView {
                 VStack {

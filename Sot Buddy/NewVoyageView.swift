@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct NewVoyageView: View {
     @State private var voyageName = ""
@@ -29,24 +30,26 @@ struct NewVoyageView: View {
     }
     
     func goldProfit() -> Int {
-        if finalGold == "" {
+        let filtered = finalGold.filter { "0123456789".contains($0) }
+        if filtered == "" {
             return 0
         } else {
             if initialGold == "" {
-                return Int(finalGold)!
+                return Int(filtered)!
             }
-            return Int(finalGold)! - Int(initialGold)!
+            return Int(filtered)! - Int(initialGold)!
         }
     }
     
     func doubloonProfit() -> Int {
-        if finalDoubloons == "" {
+        let filtered = finalDoubloons.filter { "0123456789".contains($0) }
+        if filtered == "" {
             return 0
         } else {
             if initialDoubloons == "" {
-                return Int(finalDoubloons)!
+                return Int(filtered)!
             }
-            return Int(finalDoubloons)! - Int(initialDoubloons)!
+            return Int(filtered)! - Int(initialDoubloons)!
         }
     }
     
@@ -82,11 +85,23 @@ struct NewVoyageView: View {
                     Image("Gold")
                     TextField("Initial Gold", text: $initialGold)
                         .keyboardType(.decimalPad)
+                        .onReceive(Just(initialGold)) { newValue in
+                            let filtered = newValue.filter { "0123456789".contains($0) }
+                            if filtered != newValue {
+                                self.initialGold = filtered
+                            }
+                        }
                 }
                 HStack {
                     Image("Doubloon")
                     TextField("Initial Doubloons", text: $initialDoubloons)
                         .keyboardType(.decimalPad)
+                        .onReceive(Just(initialDoubloons)) { newValue in
+                            let filtered = newValue.filter { "0123456789".contains($0) }
+                            if filtered != newValue {
+                                self.initialDoubloons = filtered
+                            }
+                        }
                 }
             }
             Section {
@@ -133,8 +148,8 @@ struct NewVoyageView: View {
                         Section {
                             HStack {
                                 Spacer()
-                            Text(timeString(time: TimeInterval(timerClass.secondElapsed)))
-                                .font(.system(size: 60))
+                                Text(timeString(time: TimeInterval(timerClass.secondElapsed)))
+                                    .font(.system(size: 60))
                                 Spacer()
                             }
                         } header: {
@@ -153,16 +168,28 @@ struct NewVoyageView: View {
                             Text("Initial")
                         }
                         Section {
-                        HStack {
-                            Image("Gold")
-                            TextField("Final Gold", text: $finalGold)
-                                .keyboardType(.decimalPad)
-                        }
-                        HStack {
-                            Image("Doubloon")
-                            TextField("Final Doubloons", text: $finalDoubloons)
-                                .keyboardType(.decimalPad)
-                        }
+                            HStack {
+                                Image("Gold")
+                                TextField("Final Gold", text: $finalGold)
+                                    .keyboardType(.decimalPad)
+                                    .onReceive(Just(finalGold)) { newValue in
+                                        let filtered = newValue.filter { "0123456789".contains($0) }
+                                        if filtered != newValue {
+                                            self.finalGold = filtered
+                                        }
+                                    }
+                            }
+                            HStack {
+                                Image("Doubloon")
+                                TextField("Final Doubloons", text: $finalDoubloons)
+                                    .keyboardType(.decimalPad)
+                                    .onReceive(Just(finalDoubloons)) { newValue in
+                                        let filtered = newValue.filter { "0123456789".contains($0) }
+                                        if filtered != newValue {
+                                            self.finalDoubloons = filtered
+                                        }
+                                    }
+                            }
                         } header: {
                             Text("Final")
                         }
@@ -172,8 +199,8 @@ struct NewVoyageView: View {
                         } label: {
                             HStack {
                                 Spacer()
-                            Text("Done")
-                                .bold()
+                                Text("Done")
+                                    .bold()
                                 Spacer()
                             }
                         }

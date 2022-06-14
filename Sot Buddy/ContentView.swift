@@ -7,16 +7,29 @@
 
 import SwiftUI
 
-struct voyage: Identifiable {
+struct voyage: Identifiable, Encodable, Decodable {
     let name: String
     let duration: Int
     let gold: Int
     let doubloons: Int
     var id: String { name }
 }
+
 var voyages: [voyage] = []
 
 struct ContentView: View {
+    func getVoyages() -> Array<voyage> {
+        let outputArray: [voyage] = []
+        let decoderData: Data = UserDefaults.standard.data(forKey: "voyages")!
+        do {
+            let decoder = JSONDecoder()
+            let outputData = try decoder.decode([voyage].self, from: decoderData)
+            print(outputData)
+        } catch {
+            print("decoding no worky")
+        }
+        return outputArray
+    }
     @State var previousVoyages = voyages
     
     func timeString(time: TimeInterval) -> String {
@@ -62,7 +75,7 @@ struct ContentView: View {
             .navigationBarTitle(Text("Ahoy!"))
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
-                previousVoyages = voyages
+                previousVoyages = getVoyages()
             }
         }
     }
@@ -122,6 +135,13 @@ struct NewVoyage: View {
     func saveVoyage() {
         let outputVoyage = voyage(name: (voyageName.count != 0 ? voyageName : "My Voyage"), duration: Int(managerClass.secondElapsed), gold: goldProfit(), doubloons: doubloonProfit())
         voyages.insert(outputVoyage, at: 0)
+        do {
+            let encoder = JSONEncoder()
+            let encodedData = try encoder.encode(voyages)
+            UserDefaults.standard.set(encodedData, forKey: "voyages")
+        } catch {
+            print("Unable to encode outputVoyage")
+        }
     }
     
     var body: some View {
@@ -252,5 +272,6 @@ class ManagerClass: ObservableObject {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .preferredColorScheme(.light)
     }
 }

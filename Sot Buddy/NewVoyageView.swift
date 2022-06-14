@@ -117,6 +117,7 @@ struct NewVoyageView: View {
                     voyageName = ""
                 })}
         .navigationBarTitle(Text("New Voyage"))
+        .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $voyageSheetShow, onDismiss: {
             timerClass.stop()
             voyageName = ""
@@ -128,8 +129,30 @@ struct NewVoyageView: View {
         }) {
             NavigationView {
                 VStack {
-                    Text(timeString(time: TimeInterval(timerClass.secondElapsed)))
                     Form {
+                        Section {
+                            HStack {
+                                Spacer()
+                            Text(timeString(time: TimeInterval(timerClass.secondElapsed)))
+                                .font(.system(size: 60))
+                                Spacer()
+                            }
+                        } header: {
+                            Text("Duration")
+                        }
+                        Section {
+                            HStack {
+                                Image("Gold")
+                                Text(initialGold.count == 0 ? "0" : initialGold)
+                            }
+                            HStack {
+                                Image("Doubloon")
+                                Text(initialDoubloons.count == 0 ? "0" : initialDoubloons)
+                            }
+                        } header: {
+                            Text("Initial")
+                        }
+                        Section {
                         HStack {
                             Image("Gold")
                             TextField("Final Gold", text: $finalGold)
@@ -139,6 +162,20 @@ struct NewVoyageView: View {
                             Image("Doubloon")
                             TextField("Final Doubloons", text: $finalDoubloons)
                                 .keyboardType(.decimalPad)
+                        }
+                        } header: {
+                            Text("Final")
+                        }
+                        Button {
+                            showAlert.toggle()
+                            timerClass.stop()
+                        } label: {
+                            HStack {
+                                Spacer()
+                            Text("Done")
+                                .bold()
+                                Spacer()
+                            }
                         }
                     }
                     HStack {
@@ -154,16 +191,7 @@ struct NewVoyageView: View {
                     }
                 }
                 .navigationTitle(Text(voyageName != "" ? voyageName : "My Voyage"))
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    Button {
-                        showAlert.toggle()
-                        timerClass.stop()
-                    } label: {
-                        Text("Done")
-                            .bold()
-                    }
-                }
+                .navigationBarTitleDisplayMode(.large)
             }
             .alert(isPresented: $showAlert) {
                 Alert(

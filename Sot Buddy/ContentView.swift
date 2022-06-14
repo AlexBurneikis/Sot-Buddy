@@ -85,9 +85,11 @@ struct ContentView: View {
                         .onDelete(perform: delete)
                     }
                 }
+                .toolbar {
+                    EditButton()
+                }
             }
             .navigationBarTitle(Text("Voyages"))
-            .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 previousVoyages = getVoyages()
             }

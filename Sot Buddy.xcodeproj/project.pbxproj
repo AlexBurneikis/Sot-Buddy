@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38A5BD8728585EA8000D1FC3 /* NewVoyageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A5BD8628585EA8000D1FC3 /* NewVoyageView.swift */; };
+		38A5BD8928586DC9000D1FC3 /* PreviousVoyageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A5BD8828586DC9000D1FC3 /* PreviousVoyageView.swift */; };
 		38A7BC9B28532EDB002B5ED3 /* Sot_BuddyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A7BC9A28532EDB002B5ED3 /* Sot_BuddyApp.swift */; };
 		38A7BC9D28532EDB002B5ED3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A7BC9C28532EDB002B5ED3 /* ContentView.swift */; };
 		38A7BC9F28532EDB002B5ED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38A7BC9E28532EDB002B5ED3 /* Assets.xcassets */; };
@@ -14,6 +16,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		38A5BD8628585EA8000D1FC3 /* NewVoyageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewVoyageView.swift; sourceTree = "<group>"; };
+		38A5BD8828586DC9000D1FC3 /* PreviousVoyageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviousVoyageView.swift; sourceTree = "<group>"; };
 		38A7BC9728532EDB002B5ED3 /* Sot Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sot Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		38A7BC9A28532EDB002B5ED3 /* Sot_BuddyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sot_BuddyApp.swift; sourceTree = "<group>"; };
 		38A7BC9C28532EDB002B5ED3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -53,6 +57,8 @@
 			children = (
 				38A7BC9A28532EDB002B5ED3 /* Sot_BuddyApp.swift */,
 				38A7BC9C28532EDB002B5ED3 /* ContentView.swift */,
+				38A5BD8828586DC9000D1FC3 /* PreviousVoyageView.swift */,
+				38A5BD8628585EA8000D1FC3 /* NewVoyageView.swift */,
 				38A7BC9E28532EDB002B5ED3 /* Assets.xcassets */,
 				38A7BCA028532EDB002B5ED3 /* Preview Content */,
 			);
@@ -137,7 +143,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38A5BD8728585EA8000D1FC3 /* NewVoyageView.swift in Sources */,
 				38A7BC9D28532EDB002B5ED3 /* ContentView.swift in Sources */,
+				38A5BD8928586DC9000D1FC3 /* PreviousVoyageView.swift in Sources */,
 				38A7BC9B28532EDB002B5ED3 /* Sot_BuddyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

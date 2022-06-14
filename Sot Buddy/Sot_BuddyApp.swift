@@ -17,15 +17,15 @@ struct Sot_BuddyApp: App {
         var id: String { name }
     }
     
-    let placeholderData: [voyage] = []
+    let voyages: [voyage] = []
     
     init() {
         do {
             let encoder = JSONEncoder()
-            let Data = try encoder.encode(placeholderData)
+            let Data = try encoder.encode(voyages)
             UserDefaults.standard.register(defaults: ["voyages" : Data])
         } catch {
-            print("Unable to encode outputVoyage")
+            print("Unable to encode voyages")
         }
     }
     var body: some Scene {

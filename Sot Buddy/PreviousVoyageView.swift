@@ -18,25 +18,27 @@ struct PreviousVoyageView: View {
     }
     
     func goldPerHour() -> Int {
-        let hours = (Float(previousVoyage.duration) + 0.1) / 3600
-        return hours == 0 ? 0 : Int(Float(previousVoyage.gold)/hours)
+        let hours = (Float(previousVoyage.duration)) / 3600
+        return hours == 0 ? 0 : Int(Float(previousVoyage.gold) / hours + (previousVoyage.gold == 0 ? 0 : 1))
     }
     
     func doubloonsPerHour() -> Int {
-        let hours = (Float(previousVoyage.duration) + 0.1) / 3600
-        return hours == 0 ? 0 : Int(Float(previousVoyage.doubloons)/hours)
+        let hours = (Float(previousVoyage.duration)) / 3600
+        return hours == 0 ? 0 : Int((Float(previousVoyage.doubloons)) / hours + (previousVoyage.doubloons == 0 ? 0 : 1))
     }
     
     var body: some View {
-        NavigationView {
+        VStack {
             Form {
                 Section {
                     HStack {
                         Spacer()
                         Text(timeString(time: TimeInterval(previousVoyage.duration)))
-                            .font(.system(size: 40))
+                            .font(.system(size: 60))
                         Spacer()
                     }
+                } header: {
+                    Text("Duration")
                 }
                 Section {
                     HStack {
@@ -49,18 +51,22 @@ struct PreviousVoyageView: View {
                         Text("Gold/Hour:")
                         Text(String(goldPerHour()))
                     }
+                } header: {
+                    Text("Gold")
                 }
                 Section {
                     HStack {
                         Image("Doubloon")
                         Text("Doubloons Earned:")
-                        Text(String(previousVoyage.gold))
+                        Text(String(previousVoyage.doubloons))
                     }
                     HStack {
                         Image("Doubloon")
                         Text("Doubloons/Hour:")
                         Text(String(doubloonsPerHour()))
                     }
+                } header: {
+                    Text("Doubloons")
                 }
             }
         }

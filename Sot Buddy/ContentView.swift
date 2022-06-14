@@ -86,7 +86,7 @@ struct ContentView: View {
                     }
                 }
             }
-            .navigationBarTitle(Text("Ahoy!"))
+            .navigationBarTitle(Text("Voyages"))
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 previousVoyages = getVoyages()
@@ -95,7 +95,7 @@ struct ContentView: View {
     }
 }
 
-class ManagerClass: ObservableObject {
+class TimerClass: ObservableObject {
     @Published var secondElapsed = 0.9
     var timer = Timer()
     

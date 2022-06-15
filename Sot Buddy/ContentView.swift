@@ -86,7 +86,7 @@ struct ContentView: View {
                     }
                 }
                 .toolbar {
-                    if previousVoyages.count != 0{
+                    if previousVoyages.count != 0 {
                         EditButton()
                     }
                 }

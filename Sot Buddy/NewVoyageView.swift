@@ -90,6 +90,10 @@ struct NewVoyageView: View {
                             if filtered != newValue {
                                 self.initialGold = filtered
                             }
+                            if initialGold.count > 15 {
+                                let index = initialGold.index(initialGold.startIndex, offsetBy: initialGold.count - 1)
+                                initialGold.remove(at: index)
+                            }
                         }
                 }
                 HStack {
@@ -100,6 +104,10 @@ struct NewVoyageView: View {
                             let filtered = newValue.filter { "0123456789".contains($0) }
                             if filtered != newValue {
                                 self.initialDoubloons = filtered
+                            }
+                            if initialDoubloons.count > 15 {
+                                let index = initialDoubloons.index(initialDoubloons.startIndex, offsetBy: initialDoubloons.count - 1)
+                                initialDoubloons.remove(at: index)
                             }
                         }
                 }
@@ -165,6 +173,10 @@ struct NewVoyageView: View {
                                         if filtered != newValue {
                                             self.finalGold = filtered
                                         }
+                                        if finalGold.count > 15 {
+                                            let index = finalGold.index(finalGold.startIndex, offsetBy: finalGold.count - 1)
+                                            finalGold.remove(at: index)
+                                        }
                                     }
                                 Text(initialGold.count == 0 ? "0" : initialGold)
                                     .foregroundColor(Color.gray)
@@ -177,6 +189,10 @@ struct NewVoyageView: View {
                                         let filtered = newValue.filter { "0123456789".contains($0) }
                                         if filtered != newValue {
                                             self.finalDoubloons = filtered
+                                        }
+                                        if finalDoubloons.count > 15 {
+                                            let index = finalDoubloons.index(finalDoubloons.startIndex, offsetBy: finalDoubloons.count - 1)
+                                            finalDoubloons.remove(at: index)
                                         }
                                     }
                                 Text(initialDoubloons.count == 0 ? "0" : initialDoubloons)

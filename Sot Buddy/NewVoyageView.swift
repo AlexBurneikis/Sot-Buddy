@@ -63,8 +63,6 @@ struct NewVoyageView: View {
         return hours == 0 ? 0 : Int(Float(doubloonProfit()) / hours + (doubloonProfit() == 0 ? 0 : 1))
     }
     
-    
-    
     func saveVoyage() {
         let outputVoyage = voyage(name: (voyageName.count != 0 ? voyageName : "My Voyage"), duration: Int(timerClass.secondElapsed), gold: goldProfit(), doubloons: doubloonProfit())
         voyages.insert(outputVoyage, at: 0)
@@ -242,7 +240,8 @@ struct NewVoyageView: View {
                     },
                     secondaryButton: Alert.Button.cancel(Text("Continue")) {
                         timerClass.start()
-                    })
+                    }
+                )
             }
         }
     }

@@ -86,7 +86,9 @@ struct ContentView: View {
                     }
                 }
                 .toolbar {
-                    EditButton()
+                    if previousVoyages.count != 0{
+                        EditButton()
+                    }
                 }
             }
             .navigationBarTitle(Text("Voyages"))
